@@ -89,3 +89,50 @@ docker run --detach \
 | API_ENDPOINT | [optional] default: sensors) Knoten auf dem Objekte abgefragt werden sollen. z.B. lights | 
 | POLLING_FREQUENCY | [optional] (default: .500) Millisekunden, um die die Abfragen an die Bridge verzögert werden. bei zu großer Belastung der Bridge oder des Netzes sollte dad erhöht werden.| 
 
+## Button Events Rückabe
+
+Ein Auszug aus der API:
+
+```
+"events": [
+						{
+							"buttonevent": 3000,
+							"eventtype": "initial_press"
+						},
+						{
+							"buttonevent": 3001,
+							"eventtype": "repeat"
+						},
+						{
+							"buttonevent": 3002,
+							"eventtype": "short_release"
+						},
+						{
+							"buttonevent": 3003,
+							"eventtype": "long_release"
+						}
+					]
+				},
+				{
+					"repeatintervals": [
+						800
+					],
+					"events": [
+						{
+							"buttonevent": 4000,
+							"eventtype": "initial_press"
+						},
+						{
+							"buttonevent": 4001,
+							"eventtype": "repeat"
+						},
+						{
+							"buttonevent": 4002,
+							"eventtype": "short_release"
+						},
+						{
+							"buttonevent": 4003,
+							"eventtype": "long_release"
+						}
+					]
+```
