@@ -26,6 +26,20 @@ cntmsg=0
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # In[]
+def get_sensor_cnt(sensor):
+    global sensordata
+    if sensor in sensordata:
+        return sensordata[sensor][c.msgcounter]
+    return 0
+
+def incr_sensor_cnt(sensor):
+    global sensordata
+    if sensor not in sensordata:
+        sensordata[sensor][c.msgcounter] = 0    
+    sensordata[sensor][c.msgcounter] = sensordata[sensor][c.msgcounter]+1
+    
+
+# In[]
 
 def get_sensor_data(jsonr,sensor):
 
@@ -44,7 +58,7 @@ def get_sensor_data(jsonr,sensor):
             if c.lastupdated in jsonr[node][c.state]:
                 # Es gibt machmal kein LastUpate z.B. bei Lampen
                 lastupdt = jsonr[node][c.state][c.lastupdated]
-                return {name: {c.state : state, c.lastupdated: lastupdt}}
+                return {name: {c.state:state, c.lastupdated:lastupdt, c.msgcounter:get_sensor_cnt(sensor)}}
             return {name: {c.state : state}}
             
 # In[]
@@ -52,18 +66,8 @@ def get_sensor_data(jsonr,sensor):
 def send_udp_message(sensordata):
     # es gibt nur einen Key und den brauchen wir
     sname = list(sensordata.keys())[0]
-    udpmessage = str({ sname:sensordata[sname][c.state] })
-
+    udpmessage = str({ sname:sensordata[sname][c.state], c.msgcounter: get_sensor_cnt(sname)})
     return sock.sendto(bytes(udpmessage, c.encoding), (udp_target_ip, udp_port))
-
-# In[]
-
-def count_msg_and_send_counter():
-    global cntmsg
-    cntmsg += 1
-    udpmessage = str({ c.msgcounter:cntmsg })
-    print('DEBUG')
-    print(sock.sendto(bytes(udpmessage, c.encoding), (udp_target_ip, udp_port)))
 
 
 # In[]
@@ -77,7 +81,7 @@ while True:
         try:
             new_sensordata = get_sensor_data(jsonr,sensor)
         except:
-            print(" Error while reveiving data for {} ".sensor)
+            print(" Error while retreiving data for {} ".sensor)
             pass
         if (     (   sensor not in sensordata 
                   or sensordata[sensor] != new_sensordata[sensor])
@@ -86,7 +90,7 @@ while True:
             send_udp_message(new_sensordata)
             sensordata.update(new_sensordata)
             print(new_sensordata)
-            count_msg_and_send_counter()
+            incr_sensor_cnt(sensor)
 
     sleep(poll_freq)
 
