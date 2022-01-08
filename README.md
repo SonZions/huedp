@@ -2,7 +2,9 @@
 Docker Container um Änderungen an hue Sensoren und Remotes per UDP-Nachricht zu melden.
 Mein Usecase: Status des Motion Sensors (Presens, Lightlevel) und der Fernbedienung (Button 1-n) nutzen zu können.
 
-Nach entsprechner Konfiguration fragt der Container die Bridge zwei mal in der Sekunde nach den Entsprechenden Sensoren/Objekten/Lichtern und beobachtet je nach Typ die vorkonfigurierten Stati. Wenn eine Änderung eines Status erkannt wird, wird diese an den Miniserver geschickt. 
+Nach entsprechner Konfiguration fragt der Container die Bridge zwei mal in der Sekunde nach den Entsprechenden Sensoren/Objekten/Lichtern und beobachtet je nach Typ die vorkonfigurierten Stati. Wenn eine Änderung eines Status erkannt wird, wird diese an den Server geschickt. 
+
+## Vorkonfigurierte Stati
 
 | Typ | Beobachteter Status | Rückgabe |
 |-----|---------------------|----------|
@@ -57,7 +59,7 @@ docker run --detach \
            --env BRIDGE_USERNAME=<<User Name: Siehe Vorbereitung>>>
            --env UDP_TARGET_IP=<<IP des Smarthome Servers>>
            --env UDP_PORT=<<Frei wählbare Nummer>>
-           --env SENSORS=<<Liste der Sensoren>>>
+           --env SENSORS=<<Liste der Sensoren als JSON Array>>
            dudanski/huedp:latest
 ```
 
