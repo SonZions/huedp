@@ -20,6 +20,10 @@ print(sensors)
 # dict to store and detect changes
 sensordata={}
 
+# counter für anzahl msg
+cntmsg=0
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # In[]
 
@@ -50,11 +54,19 @@ def send_udp_message(sensordata):
     sname = list(sensordata.keys())[0]
     udpmessage = str({ sname:sensordata[sname][c.state] })
 
-    sock.sendto(bytes(udpmessage, c.encoding), (udp_target_ip, udp_port))
+    return sock.sendto(bytes(udpmessage, c.encoding), (udp_target_ip, udp_port))
 
 # In[]
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
+def count_msg_and_send_counter():
+    global cntmsg
+    cntmsg += 1
+    udpmessage = str({ c.msgcounter:cntmsg })
+    print('DEBUG')
+    print(sock.sendto(bytes(udpmessage, c.encoding), (udp_target_ip, udp_port)))
+
+
+# In[]
 while True:
     # response von der Bridge holen und jasonizen
     response = requests.get("http://"+bridge_ip+"/api/"+bridge_username+"/"+api_endpoint)
@@ -74,7 +86,9 @@ while True:
             send_udp_message(new_sensordata)
             sensordata.update(new_sensordata)
             print(new_sensordata)
+            count_msg_and_send_counter()
 
     sleep(poll_freq)
+
   
 # %%

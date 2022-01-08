@@ -5,6 +5,7 @@ state = 'state'
 jtype = 'type'
 statetype = 'statetype'
 lastupdated = 'lastupdated'
+msgcounter = 'msgcounter'
 encoding='UTF-8'
 keymapping={'ZLLTemperature':'temperature', 
             'ZLLPresence':'presence',
