@@ -8,12 +8,12 @@ Nach entsprechner Konfiguration fragt der Container die Bridge zwei mal in der S
 
 | Typ | Beobachteter Status | Rückgabe |
 |-----|---------------------|----------|
-| ZLLTemperature | temperature | <int> |
-| ZLLPresence | presence | <bool int> |
-| ZLLLightLevel | lightlevel | <int>
-| ZLLSwitch | buttonevent | <int> |
-| Dimmable light | on | <bool int> |
-| Extended color light | on | <bool int> |
+| ZLLTemperature | temperature | int Value |
+| ZLLPresence | presence | bool int Vaue |
+| ZLLLightLevel | lightlevel | int Value
+| ZLLSwitch | buttonevent | int Value |
+| Dimmable light | on | bool int Value |
+| Extended color light | on | bool int Value |
 
 
 ## build
@@ -91,9 +91,20 @@ docker run --detach \
 | API_ENDPOINT | [optional] default: sensors) Knoten auf dem Objekte abgefragt werden sollen. z.B. lights | 
 | POLLING_FREQUENCY | [optional] (default: .500) Millisekunden, um die die Abfragen an die Bridge verzögert werden. bei zu großer Belastung der Bridge oder des Netzes sollte dad erhöht werden.| 
 
-## Button Events Rückabe
+## Generierte Nachrichten
 
-Ein Auszug aus der API:
+Die Nachrichten folgen den Format:
+
+{'<<Sensor_Name>>': <integer Value>, 'msgcounter': <integer Value>}
+
+
+
+### Button Events Rückabe
+Der Status der buttonenvents setzt sich aus einer vierstelligen Nummer zusammen. 
+
+[Nummer der Taste [1-4]][Keine Ahnung][Keine Ahnung][Art des Tastendrucks]
+
+#### Ein Auszug aus der API:
 
 ```
 "events": [
