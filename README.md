@@ -94,9 +94,9 @@ docker run --detach \
 ## Generierte Nachrichten
 
 Die Nachrichten folgen den Format:
-
+```
 {'<<Sensor_Name>>': <integer Value>, 'msgcounter': <integer Value>}
-
+```
 
 
 ### Button Events Rückabe
